@@ -7,15 +7,16 @@ package com.java.test.junior.service;
 import com.java.test.junior.model.Product;
 import com.java.test.junior.model.ProductDTO;
 
-/**
- * @author dumitru.beselea
- * @version java-test-junior
- * @apiNote 08.12.2022
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
 public interface ProductService {
-    /**
-     * @param productDTO this product to be created
-     * @return the product created from the database
-     */
     Product createProduct(ProductDTO productDTO);
+    List<Product> getProducts();
+    Product getProduct(Long prodId);
+    Product addProduct(Product product);
+    Product updateProduct(Long prodId, Product product);
+    void deleteProduct(Long prodId);
+
 }

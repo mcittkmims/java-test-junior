@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: java-test-junior
+  - include:
+      file: migration/V1__migrate_table_product.sql
+      relativeToChangelogFile: true
