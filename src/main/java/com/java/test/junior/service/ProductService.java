@@ -15,8 +15,8 @@ public interface ProductService {
     Product createProduct(ProductDTO productDTO);
     List<Product> getProducts();
     Product getProduct(Long prodId);
-    Product addProduct(Product product);
-    Product updateProduct(Long prodId, Product product);
+    void addProduct(Product product);
+    void updateProduct(Long prodId, Product product);
     void deleteProduct(Long prodId);
 
 }
