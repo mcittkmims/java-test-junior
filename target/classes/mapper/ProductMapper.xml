@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.java.test.junior.mapper.ProductMapper">
+    <select id="findById" resultMap="productResultMapper">
+        SELECT *
+        FROM product
+        WHERE id = #{id}
+    </select>
+
+    <resultMap id="productResultMapper" type="com.java.test.junior.model.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="price" column="price"/>
+        <result property="description" column="description"/>
+        <result property="userId" column="user_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+</mapper>

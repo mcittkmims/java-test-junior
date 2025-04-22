@@ -1,0 +1,7 @@
+com/java/test/junior/MarketplaceApplication.class
+com/java/test/junior/service/ProductServiceImpl.class
+com/java/test/junior/model/Product.class
+com/java/test/junior/model/ProductDTO.class
+com/java/test/junior/service/ProductService.class
+com/java/test/junior/controller/ProductController.class
+com/java/test/junior/mapper/ProductMapper.class
