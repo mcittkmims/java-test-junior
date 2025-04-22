@@ -4,15 +4,15 @@
 
 package com.java.test.junior.controller;
 
+import com.java.test.junior.exception.PaginationParamsException;
 import com.java.test.junior.model.Product;
 import com.java.test.junior.model.ProductDTO;
 import com.java.test.junior.service.ProductService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -22,34 +22,36 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public Product createProduct(ProductDTO productDTO) {
-//        return productService.createProduct(productDTO);
-//    }
-
-    @GetMapping
-    public List<Product> getProducts(){
-        return this.productService.getProducts();
-    }
-
     @GetMapping("/{prodId}")
+    @ResponseStatus(HttpStatus.OK)
     public Product getProduct(@PathVariable Long prodId){
-        return this.productService.getProduct(prodId);
+        return productService.getProduct(prodId);
     }
 
     @PostMapping
-    public void addProduct(@RequestBody Product product){
-        this.productService.addProduct(product);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product addProduct(@RequestBody @Valid ProductDTO productDTO){
+        return productService.addProduct(productDTO);
     }
 
     @PutMapping("/{prodId}")
-    public void updateProduct(@PathVariable Long prodId, @RequestBody Product product){
-        this.productService.updateProduct(prodId, product);
+    @ResponseStatus(HttpStatus.OK)
+    public Product updateProduct(@PathVariable Long prodId, @RequestBody @Valid ProductDTO product){
+        return productService.updateProduct(prodId, product);
     }
 
     @DeleteMapping("/{prodId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable Long prodId){
-        this.productService.deleteProduct(prodId);
+        productService.deleteProduct(prodId);
+    }
+
+    @GetMapping()
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> getProducts(@RequestParam int page, @RequestParam("page_size") int pageSize){
+        if(page <= 0 || pageSize <= 0){
+            throw new PaginationParamsException("Invalid query parameters");
+        }
+        return productService.getLimitedProducts(page, pageSize);
     }
 }
