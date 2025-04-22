@@ -4,21 +4,25 @@
 
 package com.java.test.junior.controller;
 
-import com.java.test.junior.exception.PaginationParamsException;
+
 import com.java.test.junior.model.Product;
 import com.java.test.junior.model.ProductDTO;
 import com.java.test.junior.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 
 @RequestMapping("/products")
 @RestController
 @AllArgsConstructor
+@Validated
 public class ProductController {
     private final ProductService productService;
 
@@ -46,12 +50,10 @@ public class ProductController {
         productService.deleteProduct(prodId);
     }
 
+    @Valid
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getProducts(@RequestParam int page, @RequestParam("page_size") int pageSize){
-        if(page <= 0 || pageSize <= 0){
-            throw new PaginationParamsException("Invalid query parameters");
-        }
+    public List<Product> getProducts(@RequestParam @Min(1) int page, @RequestParam("page_size") @Min(1) @Max(150) int pageSize) {
         return productService.getLimitedProducts(page, pageSize);
     }
 }
