@@ -2,6 +2,7 @@ package com.java.test.junior.exception.global;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.validation.ConstraintViolationException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -23,6 +25,25 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(globalException, badRequest);
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+
+        String errorMessage = e.getBindingResult().getFieldErrors()
+                .stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        GlobalException globalException = new GlobalException(
+                errorMessage,
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("UTC"))
+        );
+
+        return new ResponseEntity<>(globalException, badRequest);
+    }
+
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<Object> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
