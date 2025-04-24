@@ -1,5 +1,6 @@
 package com.java.test.junior.exception.global;
 
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -54,5 +55,16 @@ public class GlobalExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("UTC"))
         );
         return new ResponseEntity<>(globalException, badRequest);
+    }
+
+    @ExceptionHandler(io.jsonwebtoken.security.SignatureException.class)
+    public ResponseEntity<Object> handleInvalidJwtSignature(SignatureException e) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        GlobalException response = new GlobalException(
+                "Invalid JWT signature",
+                status,
+                ZonedDateTime.now(ZoneId.of("UTC"))
+        );
+        return new ResponseEntity<>(response, status);
     }
 }

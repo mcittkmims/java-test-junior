@@ -31,4 +31,15 @@ public class ProductExceptionHandler {
         );
         return new ResponseEntity<>(productException, badRequest);
     }
+
+    @ExceptionHandler(value = {ProductCreationException.class, ProductDeletionException.class})
+    public ResponseEntity<Object> handleProductCreationException(RuntimeException e){
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ProductException productException = new ProductException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("UTC"))
+        );
+        return new ResponseEntity<>(productException, badRequest);
+    }
 }

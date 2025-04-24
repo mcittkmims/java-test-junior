@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-
+@NoArgsConstructor
 public class Product {
     private Long id;
     private String name;
@@ -25,5 +25,20 @@ public class Product {
     private Long userId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public Product(String name, double price, String description, Long userId) {
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.userId = userId;
+    }
+
+    public Product(Long id, String name, double price, String description, Long userId) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.description = description;
+        this.userId = userId;
+    }
 }
 
