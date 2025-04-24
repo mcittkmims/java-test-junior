@@ -1,5 +1,6 @@
 package com.java.test.junior.exception.global;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -57,14 +59,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(globalException, badRequest);
     }
 
-    @ExceptionHandler(io.jsonwebtoken.security.SignatureException.class)
-    public ResponseEntity<Object> handleInvalidJwtSignature(SignatureException e) {
-        HttpStatus status = HttpStatus.UNAUTHORIZED;
-        GlobalException response = new GlobalException(
-                "Invalid JWT signature",
-                status,
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<Object> handleJwtValidationException(HttpServletRequest request, Exception ex) {
+        HttpStatus forbidden = HttpStatus.FORBIDDEN;
+
+        GlobalException globalException = new GlobalException(
+                ex.getMessage(),
+                forbidden,
                 ZonedDateTime.now(ZoneId.of("UTC"))
         );
-        return new ResponseEntity<>(response, status);
+        return new ResponseEntity<>(globalException, forbidden);
     }
 }
