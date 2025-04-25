@@ -13,11 +13,18 @@ import java.util.List;
 
 public interface ProductService {
     Product getProduct(Long prodId);
+
     Product addProduct(ProductDTO productDTO, UserPrincipal userPrincipal);
+
     Product updateProduct(Long prodId, ProductDTO product, UserPrincipal userPrincipal);
+
     void deleteProduct(Long prodId, UserPrincipal userPrincipal);
+
     List<Product> getLimitedProducts(int page, int pageSize);
+
     List<Product> searchProductsByName(String name);
+
     void likeProduct(Long prodId, UserPrincipal userPrincipal);
+
     void dislikeProduct(Long prodId, UserPrincipal userPrincipal);
 }

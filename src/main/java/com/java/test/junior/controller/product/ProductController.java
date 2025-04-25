@@ -52,7 +52,6 @@ public class ProductController {
         productService.deleteProduct(prodId, userPrincipal);
     }
 
-    @Valid
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public List<Product> getProducts(@RequestParam @Min(1) int page, @RequestParam("page_size") @Min(1) @Max(150) int pageSize) {

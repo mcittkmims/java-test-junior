@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
@@ -69,5 +70,20 @@ public class GlobalExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("UTC"))
         );
         return new ResponseEntity<>(globalException, forbidden);
+    }
+
+    @ExceptionHandler(SQLException.class)
+    public ResponseEntity<Object> handleForeignKeySQLException(SQLException e) throws SQLException{
+        if ("23503".equals(e.getSQLState())) {
+            HttpStatus status = HttpStatus.BAD_REQUEST;
+            GlobalException globalException = new GlobalException(
+                    "Invalid data",
+                    status,
+                    ZonedDateTime.now(ZoneId.of("UTC"))
+            );
+            return new ResponseEntity<>(globalException, status);
+        }
+
+        throw e;
     }
 }
