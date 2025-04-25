@@ -30,13 +30,12 @@ public class UserService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public User register(UserDTO userDTO) {
+    public void register(UserDTO userDTO) {
         User user = new User(userDTO.getUsername(), encoder.encode(userDTO.getPassword()));
         User newUser = userMapper.insertUser(user);
         if (newUser == null) {
             throw new UsernameTakenException("Username '" + userDTO.getUsername() + "' already exists");
         }
-        return newUser;
     }
 
     public String verify(UserDTO userDTO) {

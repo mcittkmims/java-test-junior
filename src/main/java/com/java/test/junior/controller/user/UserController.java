@@ -18,8 +18,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public User register(@RequestBody @Valid UserDTO userDTO) {
-        return userService.register(userDTO);
+    public void register(@RequestBody @Valid UserDTO userDTO) {
+        userService.register(userDTO);
     }
 
     @PostMapping("/login")

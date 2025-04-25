@@ -34,7 +34,6 @@ public class SecurityConfig {
                         .antMatchers("/register", "/login").permitAll()
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(JWTFilter, UsernamePasswordAuthenticationFilter.class)
