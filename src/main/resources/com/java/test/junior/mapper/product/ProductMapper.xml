@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java.test.junior.mapper.product.ProductMapper">
+
+    <select id="findById" resultMap="productResultMapper">
+        SELECT * FROM Product WHERE id = #{id}
+    </select>
+
+    <select id="insertProduct" resultMap="productResultMapper">
+        INSERT INTO Product (name, price, description, user_id)
+        VALUES (#{name}, #{price}, #{description}, #{userId})
+        RETURNING *
+    </select>
+
+    <select id="updateProduct" resultMap="productResultMapper">
+        UPDATE Product SET name = #{name}, price = #{price}, description = #{description}
+        WHERE id = #{id}
+        RETURNING *
+    </select>
+
+    <select id="deleteProduct" resultMap="productResultMapper">
+        DELETE FROM Product WHERE id = #{id} RETURNING *
+    </select>
+
+    <select id="getLimitedProducts" resultMap="productResultMapper">
+        SELECT * FROM Product LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+
+    <resultMap id="productResultMapper" type="com.java.test.junior.model.product.Product">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="price" column="price"/>
+        <result property="description" column="description"/>
+        <result property="userId" column="user_id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+</mapper>
