@@ -16,5 +16,5 @@ public interface ProductService {
     Product updateProduct(Long prodId, ProductDTO product);
     void deleteProduct(Long prodId);
     List<Product> getLimitedProducts(int page, int pageSize);
-
+    List<Product> searchProductsByName(String name);
 }

@@ -28,6 +28,11 @@
         SELECT * FROM Product LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <select id="searchProductsByName" resultMap="productResultMapper">
+        SELECT * FROM Product AS p
+        WHERE LOWER(p.name) LIKE CONCAT('%', LOWER(#{name}), '%')
+    </select>
+
 
     <resultMap id="productResultMapper" type="com.java.test.junior.model.product.Product">
         <id property="id" column="id"/>

@@ -22,4 +22,6 @@ public interface ProductMapper {
     Product deleteProduct(Long id);
 
     List<Product> getLimitedProducts(@Param("limit") int limit, @Param("offset") int offset);
+
+    List<Product> searchProductsByName(String name);
 }

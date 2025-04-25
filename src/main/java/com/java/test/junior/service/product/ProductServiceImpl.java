@@ -65,4 +65,9 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.getLimitedProducts(pageSize, page*pageSize - pageSize);
     }
 
+    @Override
+    public List<Product> searchProductsByName(String name) {
+        return productMapper.searchProductsByName(name);
+    }
+
 }

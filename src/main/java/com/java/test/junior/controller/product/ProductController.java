@@ -56,4 +56,10 @@ public class ProductController {
     public List<Product> getProducts(@RequestParam @Min(1) int page, @RequestParam("page_size") @Min(1) @Max(150) int pageSize) {
         return productService.getLimitedProducts(page, pageSize);
     }
+
+    @GetMapping("/search")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> searchProductsByName(@RequestParam String name){
+        return productService.searchProductsByName(name);
+    }
 }
