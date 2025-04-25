@@ -42,4 +42,15 @@ public class ProductExceptionHandler {
         );
         return new ResponseEntity<>(productException, badRequest);
     }
+
+    @ExceptionHandler(value = {FailedToDislikeProductException.class, FailedToLikeProductException.class})
+    public ResponseEntity<Object> handleLikingProductsException(RuntimeException e){
+        HttpStatus badRequest = HttpStatus.BAD_REQUEST;
+        ProductException productException = new ProductException(
+                e.getMessage(),
+                badRequest,
+                ZonedDateTime.now(ZoneId.of("UTC"))
+        );
+        return new ResponseEntity<>(productException, badRequest);
+    }
 }

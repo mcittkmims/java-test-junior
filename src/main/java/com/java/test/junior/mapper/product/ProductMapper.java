@@ -19,9 +19,12 @@ public interface ProductMapper {
 
     Product updateProduct(Product product);
 
-    Product deleteProduct(Long id);
+    Product deleteProduct(@Param("id") Long id, @Param("userId") Long userId);
 
     List<Product> getLimitedProducts(@Param("limit") int limit, @Param("offset") int offset);
 
     List<Product> searchProductsByName(String name);
+
+    int likeOrDislikeProduct(@Param("prodId") Long prodId, @Param("userId") Long userId, @Param("liked") Boolean liked);
+
 }

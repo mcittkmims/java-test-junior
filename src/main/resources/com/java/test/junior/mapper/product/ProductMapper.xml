@@ -17,11 +17,12 @@
     <select id="updateProduct" resultMap="productResultMapper">
         UPDATE Product SET name = #{name}, price = #{price}, description = #{description}
         WHERE id = #{id}
+        AND user_id = #{userId}
         RETURNING *
     </select>
 
     <select id="deleteProduct" resultMap="productResultMapper">
-        DELETE FROM Product WHERE id = #{id} RETURNING *
+        DELETE FROM Product WHERE id = #{id} AND user_id = #{userId} RETURNING *
     </select>
 
     <select id="getLimitedProducts" resultMap="productResultMapper">
@@ -32,6 +33,20 @@
         SELECT * FROM Product AS p
         WHERE LOWER(p.name) LIKE CONCAT('%', LOWER(#{name}), '%')
     </select>
+
+
+    <insert id="likeOrDislikeProduct">
+        INSERT INTO product_like (product_id, user_id, liked)
+        VALUES (#{prodId}, #{userId}, #{liked})
+        ON CONFLICT (product_id, user_id)
+        DO UPDATE
+        SET liked =
+            CASE
+                WHEN product_like.liked = #{liked} THEN NULL
+                ELSE #{liked}
+            END;
+    </insert>
+
 
 
     <resultMap id="productResultMapper" type="com.java.test.junior.model.product.Product">
