@@ -12,3 +12,19 @@ databaseChangeLog:
   - include:
       file: migration/V1__migrate_table_product.sql
       relativeToChangelogFile: true
+
+  - changeSet:
+      id: 3
+      author: java-test-junior
+  - include:
+      file: migration/V3__migrate_table_like.sql
+      relativeToChangelogFile: true
+
+
+  - changeSet:
+      id: 4
+      author: java-test-junior
+  - include:
+      file: migration/V4__migrate_product_like_trigger.sql
+      relativeToChangelogFile: true
+
