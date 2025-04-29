@@ -2,6 +2,7 @@ package com.java.test.junior.config;
 
 
 import com.java.test.junior.filter.JWTFilter;
+import com.java.test.junior.utils.PublicUris;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +32,7 @@ public class SecurityConfig {
         return http
                 .csrf(customizer -> customizer.disable())
                 .authorizeHttpRequests(request -> request
-                        .antMatchers("/register", "/login").permitAll()
+                        .requestMatchers(PublicUris.PUBLIC_ENDPOINTS.toArray(new String[0])).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

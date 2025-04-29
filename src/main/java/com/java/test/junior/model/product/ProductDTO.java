@@ -5,11 +5,9 @@
 package com.java.test.junior.model.product;
 
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
-
 
 @Data
 public class ProductDTO {
