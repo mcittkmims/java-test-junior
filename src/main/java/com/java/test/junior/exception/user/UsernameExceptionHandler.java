@@ -14,11 +14,11 @@ public class UsernameExceptionHandler {
     @ExceptionHandler(value = {UsernameTakenException.class})
     public ResponseEntity<Object> handleUsernameTakenException(UsernameTakenException e){
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;
-        ProductException productException = new ProductException(
+        UserException userException = new UserException(
                 e.getMessage(),
                 badRequest,
                 ZonedDateTime.now(ZoneId.of("UTC"))
         );
-        return new ResponseEntity<>(productException, badRequest);
+        return new ResponseEntity<>(userException, badRequest);
     }
 }

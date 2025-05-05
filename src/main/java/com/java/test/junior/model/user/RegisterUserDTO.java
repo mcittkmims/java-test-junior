@@ -5,7 +5,7 @@ import lombok.Data;
 import jakarta.validation.constraints.*;
 
 @Data
-public class UserDTO {
+public class RegisterUserDTO {
 
     @NotBlank(message = "Username is required")
     @Pattern(
@@ -20,4 +20,7 @@ public class UserDTO {
             message = "Password must be at least 8 characters long and contain at least one lowercase letter, uppercase letter, digit and symbol"
     )
     private String password;
+
+    @NotNull
+    private UserRoles role;
 }

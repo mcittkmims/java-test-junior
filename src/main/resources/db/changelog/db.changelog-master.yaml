@@ -3,14 +3,14 @@ databaseChangeLog:
       id: 1
       author: java-test-junior
   - include:
-      file: migration/V2__migrate_table_user.sql
+      file: migration/V1__migrate_table_user.sql
       relativeToChangelogFile: true
 
   - changeSet:
       id: 2
       author: java-test-junior
   - include:
-      file: migration/V1__migrate_table_product.sql
+      file: migration/V2__migrate_table_product.sql
       relativeToChangelogFile: true
 
   - changeSet:
@@ -25,6 +25,13 @@ databaseChangeLog:
       id: 4
       author: java-test-junior
   - include:
-      file: migration/V4__migrate_product_like_trigger.sql
+      file: migration/V4__migrate_load_products_function.sql
+      relativeToChangelogFile: true
+
+  - changeSet:
+      id: 5
+      author: java-test-junior
+  - include:
+      file: migration/V5__migrate_scheduler_task.sql
       relativeToChangelogFile: true
 

@@ -1,9 +1,8 @@
-package com.java.test.junior.controller.user;
+package com.java.test.junior.controller;
 
-import com.java.test.junior.model.user.UserDTO;
+import com.java.test.junior.model.user.LoginUserDTO;
+import com.java.test.junior.model.user.RegisterUserDTO;
 import com.java.test.junior.service.user.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,12 +17,12 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public void register(@RequestBody @Valid UserDTO userDTO) {
-        userService.register(userDTO);
+    public void register(@RequestBody @Valid RegisterUserDTO registerUserDTO) {
+        userService.register(registerUserDTO);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserDTO userDTO) {
-        return userService.verify(userDTO);
+    public String login(@RequestBody LoginUserDTO loginUserDTO) {
+        return userService.verify(loginUserDTO);
     }
 }
