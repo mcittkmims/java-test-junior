@@ -26,18 +26,19 @@ public class Product {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Product(String name, double price, String description, Long userId) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
+    public Product(ProductDTO productDTO){
+        this.name = productDTO.getName();
+        this.price = productDTO.getPrice();
+        this.description = productDTO.getDescription();
+    }
+    public Product(ProductDTO productDTO, Long userId){
+        this(productDTO);
         this.userId = userId;
     }
 
-    public Product(Long id, String name, double price, String description, Long userId) {
+    public Product(Long id, ProductDTO productDTO, Long userId){
+        this(productDTO);
         this.id = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
         this.userId = userId;
     }
 }

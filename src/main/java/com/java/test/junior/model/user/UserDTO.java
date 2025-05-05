@@ -2,7 +2,7 @@ package com.java.test.junior.model.user;
 
 import lombok.Data;
 
-import javax.validation.constraints.*;
+import jakarta.validation.constraints.*;
 
 @Data
 public class UserDTO {

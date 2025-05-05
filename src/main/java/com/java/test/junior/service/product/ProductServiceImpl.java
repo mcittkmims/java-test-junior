@@ -32,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     }
     @Override
     public Product addProduct(ProductDTO productDTO, UserPrincipal userPrincipal){
-        Product product = new Product(productDTO.getName(), productDTO.getPrice(), productDTO.getDescription(), userPrincipal.getUserId());
+        Product product = new Product(productDTO, userPrincipal.getUserId());
         product = productMapper.insertProduct(product);
         if (product == null){
             throw new ProductCreationException("Adding product failed");
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product updateProduct(Long prodId, ProductDTO productDTO, UserPrincipal userPrincipal) {
-        Product product = new Product(prodId, productDTO.getName(), productDTO.getPrice(), productDTO.getDescription(), userPrincipal.getUserId());
+        Product product = new Product(prodId, productDTO, userPrincipal.getUserId());
         product = productMapper.updateProduct(product);
         if (product == null){
             throw new ProductNotFoundException("Product with id " + prodId + " not found");
