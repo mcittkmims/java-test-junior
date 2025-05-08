@@ -1,7 +1,5 @@
 package com.java.test.junior.exception.loading;
 
-import com.java.test.junior.exception.user.UserException;
-import com.java.test.junior.exception.user.UsernameTakenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,8 +21,8 @@ public class LoadingExceptionHandling {
         return new ResponseEntity<>(loadingException, status);
     }
 
-    @ExceptionHandler(value = {InvalidFileStructure.class})
-    public ResponseEntity<Object> handleLoadingInvalidFileStructure(InvalidFileStructure e){
+    @ExceptionHandler(value = {EmptyFileException.class, InvalidFileStructureException.class})
+    public ResponseEntity<Object> handleLoadingInvalidFileStructure(Exception e){
         HttpStatus status = HttpStatus.BAD_REQUEST;
         LoadingException loadingException = new LoadingException(
                 e.getMessage(),
