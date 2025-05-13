@@ -1,0 +1,31 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: java-test-junior
+    depends_on:
+      - db
+    ports:
+      - "8099:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/marketplace
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: postgres-cron
+    environment:
+      POSTGRES_DB: marketplace
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "55432:5432"
+    volumes:
+      - pgcron:/var/lib/postgresql/data
+
+volumes:
+  pgcron:

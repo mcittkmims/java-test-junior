@@ -175,13 +175,13 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     @Test
     void testGetProductsWithInvalidPagination() throws Exception {
         mockMvc.perform(get("/products")
-                        .param("page", "0") // Invalid page (less than 1)
+                        .param("page", "0")
                         .param("page_size", "10"))
                 .andExpect(status().isBadRequest());
 
         mockMvc.perform(get("/products")
                         .param("page", "1")
-                        .param("page_size", "200")) // Exceeds max size (150)
+                        .param("page_size", "200"))
                 .andExpect(status().isBadRequest());
     }
 
