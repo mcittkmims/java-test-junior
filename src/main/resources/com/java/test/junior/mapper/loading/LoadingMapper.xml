@@ -5,9 +5,7 @@
 <mapper namespace="com.java.test.junior.mapper.loading.LoadingMapper">
 
 
-    <select id="loadProducts">
-        SELECT load_products(#{fileAddress}, #{id})
-    </select>
+    <update id="copyFromFile"></update>
 
 
 </mapper>

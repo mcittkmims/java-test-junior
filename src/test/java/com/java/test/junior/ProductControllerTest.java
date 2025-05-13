@@ -39,7 +39,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
     @BeforeAll
     static void setup(@Autowired UserMapper userMapper) {
         User admin = new User();
-        admin.setUsername("admin");
+        admin.setUsername("admin1");
         admin.setPassword(new BCryptPasswordEncoder(12).encode("password")); // Encode the password
         admin.setRole("ROLE_ADMIN");
         userMapper.insertUser(admin);
@@ -47,7 +47,7 @@ public class ProductControllerTest extends AbstractIntegrationTest {
 
     @BeforeEach
     void setupSecurityContext(@Autowired UserMapper userMapper, @Autowired ProductMapper productMapper) {
-        User admin = userMapper.findByUsername("admin");
+        User admin = userMapper.findByUsername("admin1");
 
         UserDetails userPrincipal = new UserPrincipal(admin);
 
@@ -132,5 +132,85 @@ public class ProductControllerTest extends AbstractIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()", Matchers.greaterThan(0)))
                 .andExpect(jsonPath("$[0].name").value("Product 1"));
+    }
+
+    @Test
+    void testAddProductWithInvalidData() throws Exception {
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName("");
+        productDTO.setPrice(-10.0);
+        productDTO.setDescription("Test Description");
+
+        mockMvc.perform(post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testGetNonExistentProduct() throws Exception {
+        mockMvc.perform(get("/products/999")) // Non-existent ID
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testUpdateNonExistentProduct() throws Exception {
+        ProductDTO updatedProductDTO = new ProductDTO();
+        updatedProductDTO.setName("Updated Product");
+        updatedProductDTO.setPrice(120.0);
+        updatedProductDTO.setDescription("Updated Description");
+
+        mockMvc.perform(put("/products/999") // Non-existent ID
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedProductDTO)))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void testDeleteNonExistentProduct() throws Exception {
+        mockMvc.perform(delete("/products/999")) // Non-existent ID
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testGetProductsWithInvalidPagination() throws Exception {
+        mockMvc.perform(get("/products")
+                        .param("page", "0") // Invalid page (less than 1)
+                        .param("page_size", "10"))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(get("/products")
+                        .param("page", "1")
+                        .param("page_size", "200")) // Exceeds max size (150)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testUnauthorizedAccess() throws Exception {
+        SecurityContextHolder.clearContext();
+        
+        mockMvc.perform(post("/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new ProductDTO())))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testMissingRequiredParameter() throws Exception {
+        // Assuming the search endpoint requires a 'name' parameter but we don't provide it
+        mockMvc.perform(get("/products/search"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").exists())
+                .andExpect(jsonPath("$.status").value("BAD_REQUEST"));
+    }
+
+    @Test
+    void testInvalidJwtToken() throws Exception {
+        SecurityContextHolder.clearContext();
+        
+        mockMvc.perform(get("/products/1")
+                .header("Authorization", "Bearer invalid.jwt.token"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.status").value("FORBIDDEN"));
     }
 }

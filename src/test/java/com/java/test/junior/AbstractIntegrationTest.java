@@ -1,12 +1,15 @@
 package com.java.test.junior;
 
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+@DirtiesContext
 @Testcontainers
 public abstract class AbstractIntegrationTest {
 
@@ -17,6 +20,7 @@ public abstract class AbstractIntegrationTest {
             .withEnv("POSTGRES_USER", "admin")
             .withEnv("POSTGRES_PASSWORD", "admin")
             .waitingFor(Wait.forListeningPort());
+
 
     @DynamicPropertySource
     static void configure(DynamicPropertyRegistry registry) {

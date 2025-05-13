@@ -31,7 +31,7 @@ public class UserControllerTest extends AbstractIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @Order(1) // Ensures this test runs first
+    @Order(1)
     void testRegisterUser() throws Exception {
         RegisterUserDTO registerUserDTO = new RegisterUserDTO();
         registerUserDTO.setUsername("adrian");
@@ -45,7 +45,7 @@ public class UserControllerTest extends AbstractIntegrationTest {
     }
 
     @Test
-    @Order(2) // Ensures this test runs after testRegisterUser
+    @Order(2)
     void testLoginUser() throws Exception {
         LoginUserDTO loginUserDTO = new LoginUserDTO();
         loginUserDTO.setUsername("adrian");
@@ -55,5 +55,56 @@ public class UserControllerTest extends AbstractIntegrationTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(loginUserDTO)))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void testRegisterUserWithInvalidData() throws Exception {
+        RegisterUserDTO registerUserDTO = new RegisterUserDTO();
+        registerUserDTO.setUsername("123");
+        registerUserDTO.setPassword("weak");
+        registerUserDTO.setRole(UserRoles.ROLE_USER);
+
+        mockMvc.perform(post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registerUserDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testRegisterUserWithDuplicateUsername() throws Exception {
+
+        RegisterUserDTO registerUserDTO = new RegisterUserDTO();
+        registerUserDTO.setUsername("adrian"); // Same username
+        registerUserDTO.setPassword("Adri@n2005");
+        registerUserDTO.setRole(UserRoles.ROLE_USER);
+
+        mockMvc.perform(post("/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registerUserDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testLoginUserWithInvalidCredentials() throws Exception {
+        LoginUserDTO loginUserDTO = new LoginUserDTO();
+        loginUserDTO.setUsername("adrian");
+        loginUserDTO.setPassword("Password123!");
+
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginUserDTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testLoginWithNonExistentUser() throws Exception {
+        LoginUserDTO loginUserDTO = new LoginUserDTO();
+        loginUserDTO.setUsername("jsdnakj");
+        loginUserDTO.setPassword("Password123!");
+
+        mockMvc.perform(post("/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginUserDTO)))
+                .andExpect(status().isForbidden());
     }
 }

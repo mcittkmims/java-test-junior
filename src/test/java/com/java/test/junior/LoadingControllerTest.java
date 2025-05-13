@@ -76,4 +76,49 @@ public class LoadingControllerTest extends AbstractIntegrationTest {
                 .andExpect(status().isNotFound());
     }
 
+    @Test
+    void testLoadingProductsUnauthorized() throws Exception {
+        User user = new User();
+        user.setUsername("regular_user");
+        user.setPassword(new BCryptPasswordEncoder(12).encode("password"));
+        user.setRole("ROLE_USER");
+
+        UserDetails userPrincipal = new UserPrincipal(user);
+        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                userPrincipal, null, userPrincipal.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        FileSourceDTO fileSourceDTO = new FileSourceDTO();
+        fileSourceDTO.setFileAddress("products.csv");
+
+        mockMvc.perform(post("/loading/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fileSourceDTO)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void testLoadingProductsWithEmptyFile() throws Exception {
+
+        FileSourceDTO fileSourceDTO = new FileSourceDTO();
+        fileSourceDTO.setFileAddress("empty.csv");
+
+
+        mockMvc.perform(post("/loading/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fileSourceDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void testLoadingProductsWithInvalidFileStructure() throws Exception {
+
+        FileSourceDTO fileSourceDTO = new FileSourceDTO();
+        fileSourceDTO.setFileAddress("invalid_structure.csv");
+
+        mockMvc.perform(post("/loading/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(fileSourceDTO)))
+                .andExpect(status().isBadRequest());
+    }
 }

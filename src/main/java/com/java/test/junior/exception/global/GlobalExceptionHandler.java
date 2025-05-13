@@ -77,18 +77,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(globalException, forbidden);
     }
 
-    @ExceptionHandler(SQLException.class)
-    public ResponseEntity<Object> handleForeignKeySQLException(SQLException e) throws SQLException{
-        if ("23503".equals(e.getSQLState())) {
-            HttpStatus status = HttpStatus.BAD_REQUEST;
-            GlobalException globalException = new GlobalException(
-                    "Invalid data",
-                    status,
-                    ZonedDateTime.now(ZoneId.of("UTC"))
-            );
-            return new ResponseEntity<>(globalException, status);
-        }
-
-        throw e;
-    }
+//    @ExceptionHandler(SQLException.class)
+//    public ResponseEntity<Object> handleForeignKeySQLException(SQLException e) throws SQLException{
+//        if ("23503".equals(e.getSQLState())) {
+//            HttpStatus status = HttpStatus.BAD_REQUEST;
+//            GlobalException globalException = new GlobalException(
+//                    "Invalid data",
+//                    status,
+//                    ZonedDateTime.now(ZoneId.of("UTC"))
+//            );
+//            return new ResponseEntity<>(globalException, status);
+//        }
+//
+//        throw e;
+//    }
 }
