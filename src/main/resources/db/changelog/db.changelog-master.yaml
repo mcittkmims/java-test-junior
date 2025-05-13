@@ -20,18 +20,10 @@ databaseChangeLog:
       file: migration/V3__migrate_table_like.sql
       relativeToChangelogFile: true
 
-
   - changeSet:
       id: 4
       author: java-test-junior
   - include:
-      file: migration/V4__migrate_load_products_function.sql
-      relativeToChangelogFile: true
-
-  - changeSet:
-      id: 5
-      author: java-test-junior
-  - include:
-      file: migration/V5__migrate_scheduler_task.sql
+      file: migration/V4__migrate_scheduler_task.sql
       relativeToChangelogFile: true
 
