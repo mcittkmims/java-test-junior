@@ -14,10 +14,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: admin
 
   db:
-    build:
-      context: ./database
-      dockerfile: Dockerfile
-    container_name: postgres-cron
+    image: postgres:16
     environment:
       POSTGRES_DB: marketplace
       POSTGRES_USER: admin
@@ -25,7 +22,7 @@ services:
     ports:
       - "55432:5432"
     volumes:
-      - pgcron:/var/lib/postgresql/data
+      - test_intern:/var/lib/postgresql/data
 
 volumes:
-  pgcron:
+  test_intern:

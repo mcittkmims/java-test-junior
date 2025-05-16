@@ -27,4 +27,5 @@ public interface ProductMapper {
 
     int likeOrDislikeProduct(@Param("prodId") Long prodId, @Param("userId") Long userId, @Param("liked") Boolean liked);
 
+    int deleteNullLikes();
 }
