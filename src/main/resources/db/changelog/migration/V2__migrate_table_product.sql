@@ -14,15 +14,3 @@ CREATE TABLE IF NOT EXISTS "product"
     CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-CREATE OR REPLACE FUNCTION update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER update_products_updated_at
-    BEFORE UPDATE ON product
-    FOR EACH ROW
-    EXECUTE FUNCTION update_modified_column();
